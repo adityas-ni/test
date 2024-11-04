@@ -36,3 +36,16 @@ jobs:
     - name: Test with pytest
       run: |
         pytest
+
+    - name: Archive production artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: dist
+        path: |
+          dist
+          !dist/**/*.md
+    - name: Archive code coverage results
+      uses: actions/upload-artifact@v4
+      with:
+        name: code-coverage-report
+        path: output/test/code-coverage.html
