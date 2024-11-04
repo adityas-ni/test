@@ -6,6 +6,8 @@ authors = ["adityas-ni <aditya.saxena@ni.com>"]
 license = "MIT"
 readme = "README.md"
 
+packages = [{ include = "myProject", from = "src" }]
+
 [tool.poetry.dependencies]
 python = "^3.9"
 

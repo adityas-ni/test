@@ -9,6 +9,10 @@
 name: Upload Python Package
 
 on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
   release:
     types: [published]
 
@@ -32,8 +36,26 @@ jobs:
         pip install build
     - name: Build package
       run: python -m build
-    - name: Publish package
-      uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
-      with:
-        user: __token__
-        password: ${{ secrets.PYPI_API_TOKEN }}
+    - name: Configure Git
+      run: |
+        git config --global user.email "aditya.saxena@ni.com"
+        git config --global user.name "adityas-ni"
+    - name: Commit and push wheel
+      run: |
+        git add -f ./dist/*.whl
+        git commit -m 'pushing new wheel'
+        git push
+
+    # - name: Commit files
+    #   if: ${{ github.event.release.target_commitish == 'main' }}
+    #   run: |
+    #     git config --local user.email "action@github.com"
+    #     git config --local user.name "GitHub Action"
+    #     git pull --tags -f
+    #     git commit -m "Bump package version" -a
+
+    # - name: Publish package
+    #   uses: pypa/gh-action-pypi-publish@27b31702a0e7fc50959f5ad993c78deac1bdfc29
+    #   with:
+    #     user: __token__
+    #     password: ${{ secrets.PYPI_API_TOKEN }}
